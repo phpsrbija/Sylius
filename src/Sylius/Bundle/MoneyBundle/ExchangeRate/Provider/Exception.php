@@ -9,12 +9,6 @@
  * file that was distributed with this source code.
  */
 
-namespace Sylius\Bundle\MoneyBundle\Converter;
+namespace Sylius\Bundle\MoneyBundle\ExchangeRate\Provider;
 
-
-class GoogleConverter implements CurrencyConverterInterface
-{
-    public function convert($value, $currency)
-    {
-    }
-}
+class Exception extends \Exception {}

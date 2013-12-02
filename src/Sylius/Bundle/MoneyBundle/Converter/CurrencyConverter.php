@@ -42,4 +42,20 @@ class CurrencyConverter implements CurrencyConverterInterface
 
         return $this->cache[$currency] = $this->exchangeRateRepository->findOneBy(array('currency' => $currency));
     }
+
+    /**
+     * Get currency with rate 1.000
+     * This currency can be used for conversion to other currencies
+     *
+     * @return mixed
+     * @throws BaseCurrencyNotSetException
+     */
+    public function getBaseCurrency()
+    {
+        if (!$baseExchangeRate = $this->exchangeRateRepository->findOneBy(array('rate' => 1))) {
+            throw new BaseCurrencyNotSetException;
+        }
+
+        return $baseExchangeRate->getCurrency();
+    }
 }

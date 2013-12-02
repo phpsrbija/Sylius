@@ -64,6 +64,24 @@
         <service id="sylius.currency_converter" class="%sylius.currency_converter.class%">
             <argument type="service" id="sylius.repository.exchange_rate" />
         </service>
+
+        <service id="sylius.exchange_rate.http_client" class="%sylius.exchange_rate.http_client.class%">
+        </service>
+
+        <service id="sylius.exchange_rate.google_provider" class="%sylius.exchange_rate.google_provider.class%">
+            <argument type="service" id="sylius.exchange_rate.http_client" />
+        </service>
+
+        <service id="sylius.exchange_rate.factory" class="%sylius.exchange_rate.factory.class%">
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
+
+        <service id="sylius.exchange_rate.updater" class="%sylius.exchange_rate.updater.class%">
+            <argument type="service" id="sylius.exchange_rate.factory" />
+        </service>
+
     </services>
 
 </container>
