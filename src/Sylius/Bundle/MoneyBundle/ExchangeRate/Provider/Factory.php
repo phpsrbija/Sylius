@@ -41,7 +41,7 @@ class Factory
      */
     private function getActiveProviderName()
     {
-        return 'sylius.exchange_rate.google_provider';
+        return 'sylius.exchange_rate.yahoo_provider';
     }
 
 }

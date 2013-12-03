@@ -20,7 +20,7 @@ use Sylius\Bundle\MoneyBundle\ExchangeRate\ProviderInterface;
  *
  * @author Ivan Đurđevac <djurdjevac@gmail.com>
  */
-class GoogleProvider implements ProviderInterface
+class YahooProvider implements ProviderInterface
 {
     /**
      * Http Client object
@@ -32,7 +32,7 @@ class GoogleProvider implements ProviderInterface
      * Service exchange rate url
      * @var string
      */
-    private $serviceUrl = 'http://rate-exchange.appspot.com/';
+    private $serviceUrl = 'http://finance.yahoo.com/';
 
     /**
      * Google provider construct
@@ -52,11 +52,16 @@ class GoogleProvider implements ProviderInterface
      */
     public function getRate($currencyFrom, $currencyTo)
     {
-        $fetchUrl = sprintf('%scurrency?from=%s&to=%s', $this->serviceUrl, $currencyFrom, $currencyTo);
-        if ($response = $this->httpClient->get($fetchUrl)->send() and $jsonResponse = $response->json()) {
-            return (float) $jsonResponse['rate'];
+        echo 'Yahoo Raye';
+        $fetchUrl = sprintf('%sd/quotes.csv?e=.csv&f=sl1d1t1&s=%s%s=X', $this->serviceUrl, $currencyFrom, $currencyTo);
+        if ($response = $this->httpClient->get($fetchUrl)->send()) {
+            $response->getBody()->seek(0);
+            $responseArray = explode(',', (string) $response->getBody());
+            if (isset($responseArray[1])) {
+                return (float) $responseArray[1];
+            }
         }
 
-        throw new Exception('Google exchange service is not available');
+        throw new Exception('Yahoo exchange service is not available');
     }
 }
