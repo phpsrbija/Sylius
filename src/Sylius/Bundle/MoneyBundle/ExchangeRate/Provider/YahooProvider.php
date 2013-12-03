@@ -52,7 +52,6 @@ class YahooProvider implements ProviderInterface
      */
     public function getRate($currencyFrom, $currencyTo)
     {
-        echo 'Yahoo Raye';
         $fetchUrl = sprintf('%sd/quotes.csv?e=.csv&f=sl1d1t1&s=%s%s=X', $this->serviceUrl, $currencyFrom, $currencyTo);
         if ($response = $this->httpClient->get($fetchUrl)->send()) {
             $response->getBody()->seek(0);
