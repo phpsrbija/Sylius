@@ -72,6 +72,10 @@
             <argument type="service" id="sylius.exchange_rate.http_client" />
         </service>
 
+        <service id="sylius.exchange_rate.yahoo_provider" class="%sylius.exchange_rate.yahoo_provider.class%">
+            <argument type="service" id="sylius.exchange_rate.http_client" />
+        </service>
+
         <service id="sylius.exchange_rate.factory" class="%sylius.exchange_rate.factory.class%">
             <call method="setContainer">
                 <argument type="service" id="service_container" />
