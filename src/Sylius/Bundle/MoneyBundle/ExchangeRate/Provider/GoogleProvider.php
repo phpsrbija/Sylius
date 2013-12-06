@@ -16,7 +16,7 @@ use Sylius\Bundle\MoneyBundle\ExchangeRate\ProviderInterface;
 /**
  * Class GoogleProvider
  *
- * Get the currency rates from the Google Service
+ * Get the currency rate from the Google Service
  *
  * @author Ivan Đurđevac <djurdjevac@gmail.com>
  */
