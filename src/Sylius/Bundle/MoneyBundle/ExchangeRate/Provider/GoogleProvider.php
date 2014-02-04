@@ -12,6 +12,7 @@
 namespace Sylius\Bundle\MoneyBundle\ExchangeRate\Provider;
 
 use Sylius\Bundle\MoneyBundle\ExchangeRate\ProviderInterface;
+use Guzzle\Http\ClientInterface;
 
 /**
  * Class GoogleProvider
@@ -38,7 +39,7 @@ class GoogleProvider implements ProviderInterface
      * Google provider construct
      * @param $httpClient
      */
-    public function __construct($httpClient)
+    public function __construct(ClientInterface $httpClient)
     {
         $this->httpClient = $httpClient;
     }
@@ -53,7 +54,7 @@ class GoogleProvider implements ProviderInterface
     public function getRate($currencyFrom, $currencyTo)
     {
         $fetchUrl = sprintf('%scurrency?from=%s&to=%s', $this->serviceUrl, $currencyFrom, $currencyTo);
-        if ($response = $this->httpClient->get($fetchUrl)->send() and $jsonResponse = $response->json()) {
+        if ($response = $this->httpClient->get($fetchUrl)->send() && $jsonResponse = $response->json()) {
             return (float) $jsonResponse['rate'];
         }
 

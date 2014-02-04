@@ -11,7 +11,9 @@
 
 namespace Sylius\Bundle\MoneyBundle\ExchangeRate\Provider;
 
-class Factory
+use Symfony\Component\DependencyInjection\ContainerAware;
+
+class ProviderFactory extends ContainerAware
 {
 
     /**
@@ -19,21 +21,18 @@ class Factory
      */
     private $container;
 
+    function __construct($providerName, $serviceName)
+    {
+
+    }
+
+
     /**
      * Create provider object
      */
     public function createProvider()
     {
         return $this->container->get($this->getActiveProviderName());
-    }
-
-    /**
-     * Set Service Container
-     * @param $container
-     */
-    public function setContainer($container)
-    {
-        $this->container = $container;
     }
 
     /**

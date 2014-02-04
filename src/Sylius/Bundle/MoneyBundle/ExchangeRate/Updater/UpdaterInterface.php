@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sylius\Bundle\MoneyBundle\ExchangeRate;
+namespace Sylius\Bundle\MoneyBundle\ExchangeRate\Updater;
 
 interface UpdaterInterface
 {

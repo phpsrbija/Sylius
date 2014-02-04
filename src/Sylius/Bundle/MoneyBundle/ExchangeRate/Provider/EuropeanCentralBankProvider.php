@@ -12,6 +12,7 @@
 namespace Sylius\Bundle\MoneyBundle\ExchangeRate\Provider;
 
 use Sylius\Bundle\MoneyBundle\ExchangeRate\ProviderInterface;
+use Guzzle\Http\ClientInterface;
 
 /**
  * Class EuropeanCentralBankProvider
@@ -38,7 +39,7 @@ class EuropeanCentralBankProvider implements ProviderInterface
      * European Central Bank provider construct
      * @param $httpClient
      */
-    public function __construct($httpClient)
+    public function __construct(ClientInterface $httpClient)
     {
         $this->httpClient = $httpClient;
     }

@@ -12,6 +12,7 @@
 namespace Sylius\Bundle\MoneyBundle\ExchangeRate\Provider;
 
 use Sylius\Bundle\MoneyBundle\ExchangeRate\ProviderInterface;
+use Guzzle\Http\ClientInterface;
 
 /**
  * Class GoogleProvider
@@ -38,7 +39,7 @@ class YahooProvider implements ProviderInterface
      * Google provider construct
      * @param $httpClient
      */
-    public function __construct($httpClient)
+    public function __construct(ClientInterface $httpClient)
     {
         $this->httpClient = $httpClient;
     }
