@@ -11,4 +11,14 @@
 
 namespace Sylius\Bundle\MoneyBundle\ExchangeRate\Provider;
 
-class Exception extends \Exception {}
+interface ProviderInterface
+{
+    /**
+     * Get rate value from external services
+     *
+     * @param  string $currencyFrom
+     * @param  string $currencyTo
+     * @return float
+     */
+    public function getRate($currencyFrom, $currencyTo);
+}

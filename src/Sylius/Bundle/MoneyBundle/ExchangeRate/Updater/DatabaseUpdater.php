@@ -11,6 +11,7 @@
 
 namespace Sylius\Bundle\MoneyBundle\ExchangeRate\Updater;
 
+use Sylius\Bundle\MoneyBundle\ExchangeRate\Provider\ProviderFactory;
 use Sylius\Bundle\MoneyBundle\ExchangeRate\UpdaterInterface;
 
 /**
@@ -26,14 +27,14 @@ class DatabaseUpdater implements UpdaterInterface
     /**
      * @var ProviderInterface
      */
-    private $exchange_rate_provider;
+    private $exchangeRateProvider;
 
     /**
      * Create Updater with provider
      */
-    public function __construct($providerFactory)
+    public function __construct(ProviderFactory $providerFactory)
     {
-        $this->exchange_rate_provider = $providerFactory->createProvider();
+        $this->exchangeRateProvider = $providerFactory->createProvider();
     }
 
     /**
@@ -44,6 +45,9 @@ class DatabaseUpdater implements UpdaterInterface
     public function updateRate($currency)
     {
         // :todo Implement method
+        echo 'Rate';
+        var_dump($this->exchangeRateProvider->getRate($currency, 'EUR'));
+        echo 'RateDone';
     }
 
     /**
