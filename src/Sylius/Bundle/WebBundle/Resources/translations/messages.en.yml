@@ -249,6 +249,10 @@ sylius:
         rate: rate
         update_header: Editing exchange rate
         updated_at: last update
+        update_all_rates: Update All Rates
+        messages:
+            success: Currency rates are updated
+            error: Currency rates are not updated
     filter: Filter
     form:
         cart:

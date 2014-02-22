@@ -17,17 +17,6 @@ class ProviderFactory extends ContainerAware
 {
 
     /**
-     * @var Container
-     */
-    private $container;
-
-    function __construct($providerName, $serviceName)
-    {
-
-    }
-
-
-    /**
      * Create provider object
      */
     public function createProvider()
