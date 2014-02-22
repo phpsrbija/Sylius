@@ -24,6 +24,7 @@
 
         <parameter key="sylius.currency_context.class">Sylius\Bundle\MoneyBundle\Context\CurrencyContext</parameter>
         <parameter key="sylius.currency_converter.class">Sylius\Bundle\MoneyBundle\Converter\CurrencyConverter</parameter>
+        <parameter key="sylius.exchange_rate.provider_factory.class">Sylius\Bundle\MoneyBundle\ExchangeRate\Provider\ProviderFactory</parameter>
     </parameters>
 
     <services>
@@ -35,7 +36,16 @@
                 <argument type="service" id="service_container" />
             </call>
         </service>
+        <!-- todo: Replace cart injection with exchange rates -->
         <service id="sylius.controller.currency" class="%sylius.controller.currency.class%">
+            <argument type="service">
+                <service factory-service="sylius.controller.configuration_factory" factory-method="createConfiguration" class="Sylius\Bundle\ResourceBundle\Controller\Configuration">
+                    <argument>sylius</argument>
+                    <argument>cart</argument>
+                    <argument>SyliusCartBundle:Cart</argument>
+                </service>
+            </argument>
+            <argument>SyliusMoneyBundle:ExchangeRate</argument>
             <call method="setContainer">
                 <argument type="service" id="service_container" />
             </call>
@@ -82,8 +92,14 @@
             </call>
         </service>
 
+        <service id="sylius.exchange_rate.provider_factory" class="%sylius.exchange_rate.provider_factory.class%">
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
+
         <service id="sylius.exchange_rate.updater" class="%sylius.exchange_rate.updater.class%">
-            <argument type="service" id="sylius.exchange_rate.factory" />
+            <argument type="service" id="sylius.exchange_rate.provider_factory" />
         </service>
 
     </services>

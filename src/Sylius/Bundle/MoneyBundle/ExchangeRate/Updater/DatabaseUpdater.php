@@ -12,7 +12,6 @@
 namespace Sylius\Bundle\MoneyBundle\ExchangeRate\Updater;
 
 use Sylius\Bundle\MoneyBundle\ExchangeRate\Provider\ProviderFactory;
-use Sylius\Bundle\MoneyBundle\ExchangeRate\UpdaterInterface;
 
 /**
  * Class GoogleProvider
