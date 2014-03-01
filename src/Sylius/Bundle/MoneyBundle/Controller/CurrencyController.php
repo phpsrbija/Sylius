@@ -10,10 +10,12 @@
  */
 
 namespace Sylius\Bundle\MoneyBundle\Controller;
-use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class CurrencyController extends ResourceController
+class CurrencyController extends Controller implements ContainerAwareInterface
 {
     public function changeAction(Request $request, $currency)
     {
@@ -22,18 +24,28 @@ class CurrencyController extends ResourceController
         return $this->redirect($request->headers->get('referer'));
     }
 
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
 
+    /**
+     * Update all exchange rates with Database Updater
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function updateAllRatesAction(Request $request)
     {
         $databaseUpdater = $this->container->get('sylius.exchange_rate.updater');
+
         if ($databaseUpdater->updateAllRates())
         {
-            $this->flashHelper->setFlash('success', 'sylius.exchange_rate.update_all_rates');
+            $message = $this->get('translator')->trans('sylius.exchange_rate.update.success', array(), 'flashes');
+            $request->getSession()->getFlashBag()->add('success', $message);
         } else {
-            $this->flashHelper->setFlash('errors', 'sylius.exchange_rate.update_all_rates');
+            $message = $this->get('translator')->trans('sylius.exchange_rate.update.error', array(), 'flashes');
+            $request->getSession()->getFlashBag()->add('error', $message);
         }
-
         return $this->redirect($this->get('router')->generate('sylius_backend_exchange_rate_index'));
-
     }
 }
