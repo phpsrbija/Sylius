@@ -1,0 +1,5 @@
+sylius:
+    exchange_rate:
+        update:
+            success: Exchange rates are updated.
+            error: There has been a problem while updating exchange rates.

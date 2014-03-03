@@ -32,20 +32,10 @@
             <argument>sylius</argument>
             <argument>exchange_rate</argument>
             <argument>SyliusMoneyBundle:ExchangeRate</argument>
-            <call method="setContainer">
-                <argument type="service" id="service_container" />
-            </call>
         </service>
+
         <!-- todo: Replace cart injection with exchange rates -->
         <service id="sylius.controller.currency" class="%sylius.controller.currency.class%">
-            <argument type="service">
-                <service factory-service="sylius.controller.configuration_factory" factory-method="createConfiguration" class="Sylius\Bundle\ResourceBundle\Controller\Configuration">
-                    <argument>sylius</argument>
-                    <argument>cart</argument>
-                    <argument>SyliusCartBundle:Cart</argument>
-                </service>
-            </argument>
-            <argument>SyliusMoneyBundle:ExchangeRate</argument>
             <call method="setContainer">
                 <argument type="service" id="service_container" />
             </call>
