@@ -11,22 +11,16 @@
 
 namespace Sylius\Bundle\MoneyBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class CurrencyController extends Controller implements ContainerAwareInterface
+class CurrencyController extends Controller
 {
     public function changeAction(Request $request, $currency)
     {
         $this->get('sylius.currency_context')->setCurrency($currency);
 
         return $this->redirect($request->headers->get('referer'));
-    }
-
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
     }
 
     /**
@@ -38,8 +32,7 @@ class CurrencyController extends Controller implements ContainerAwareInterface
     {
         $databaseUpdater = $this->container->get('sylius.exchange_rate.updater');
 
-        if ($databaseUpdater->updateAllRates())
-        {
+        if ($databaseUpdater->updateAllRates()) {
             $message = $this->get('translator')->trans('sylius.exchange_rate.update.success', array(), 'flashes');
             $request->getSession()->getFlashBag()->add('success', $message);
         } else {
