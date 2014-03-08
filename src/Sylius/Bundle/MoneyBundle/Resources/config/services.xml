@@ -90,6 +90,9 @@
 
         <service id="sylius.exchange_rate.updater" class="%sylius.exchange_rate.updater.class%">
             <argument type="service" id="sylius.exchange_rate.provider_factory" />
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
     </services>

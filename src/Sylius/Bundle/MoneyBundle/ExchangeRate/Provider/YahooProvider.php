@@ -45,9 +45,9 @@ class YahooProvider implements ProviderInterface
 
     /**
      * Get rate from Google exchange rate service
-     * @param  string    $currencyFrom
-     * @param  string    $currencyTo
-     * @throws Exception
+     * @param  string            $currencyFrom
+     * @param  string            $currencyTo
+     * @throws ProviderException
      * @return float
      */
     public function getRate($currencyFrom, $currencyTo)
@@ -61,6 +61,6 @@ class YahooProvider implements ProviderInterface
             }
         }
 
-        throw new Exception('Yahoo exchange service is not available');
+        throw new ProviderException('Yahoo exchange service is not available');
     }
 }
