@@ -46,9 +46,9 @@ class GoogleProvider implements ProviderInterface
 
     /**
      * Get rate from Google exchange rate service
-     * @param  string    $currencyFrom
-     * @param  string    $currencyTo
-     * @throws Exception
+     * @param  string            $currencyFrom
+     * @param  string            $currencyTo
+     * @throws ProviderException
      * @return float
      */
     public function getRate($currencyFrom, $currencyTo)
@@ -58,6 +58,6 @@ class GoogleProvider implements ProviderInterface
             return (float) $jsonResponse['rate'];
         }
 
-        throw new Exception('Google exchange service is not available');
+        throw new ProviderException('Google exchange service is not available');
     }
 }

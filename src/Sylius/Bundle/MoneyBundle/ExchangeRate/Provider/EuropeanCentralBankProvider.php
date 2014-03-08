@@ -46,52 +46,52 @@ class EuropeanCentralBankProvider implements ProviderInterface
 
     /**
      * Get rate from European Central Bank exchange rate service
-     * @param  string    $currencyFrom
-     * @param  string    $currencyTo
-     * @throws Exception
+     * @param  string            $currencyFrom
+     * @param  string            $currencyTo
+     * @throws ProviderException
      * @return float
      */
     public function getRate($currencyFrom, $currencyTo)
     {
         $fetchUrl = sprintf('%sstats/eurofxref/eurofxref-daily.xml', $this->serviceUrl);
 
-        try{
+        try {
             $response = $this->httpClient->get($fetchUrl)->send();
-        }catch (ClientErrorResponseException $e){
-            throw new Exception($e->getMessage());
+        } catch (ClientErrorResponseException $e) {
+            throw new ProviderException($e->getMessage());
         }
 
         $xmlResponse = $response->xml();
 
-        if (! isset($xmlResponse->Cube->Cube->Cube)){
-            throw new Exception('Invalid XML file');
+        if (! isset($xmlResponse->Cube->Cube->Cube)) {
+            throw new ProviderException('Invalid XML file');
         }
 
         $currencyFrom == 'EUR' and $currencyFromRate = 1;
         $currencyTo == 'EUR' and $currencyToRate = 1;
 
-        foreach($xmlResponse->Cube->Cube->Cube as $node){
+        foreach ($xmlResponse->Cube->Cube->Cube as $node) {
             $currency = (string) $node['currency'];
 
-            if ($currencyFrom == $currency){
+            if ($currencyFrom == $currency) {
                 $currencyFromRate = (float) $node['rate'];
             }
 
-            if ($currencyTo == $currency){
+            if ($currencyTo == $currency) {
                 $currencyToRate = (float) $node['rate'];
             }
 
-            if (isset($currencyFromRate) and isset($currencyToRate)){
+            if (isset($currencyFromRate) and isset($currencyToRate)) {
                 break;
             }
         }
 
-        if (! isset($currencyFromRate) or $currencyFromRate == 0){
-            throw new Exception('Invalid input currency code');
+        if (! isset($currencyFromRate) or $currencyFromRate == 0) {
+            throw new ProviderException('Invalid input currency code');
         }
 
-        if (! isset($currencyToRate) or $currencyToRate == 0){
-            throw new Exception('Invalid output currency code');
+        if (! isset($currencyToRate) or $currencyToRate == 0) {
+            throw new ProviderException('Invalid output currency code');
         }
 
         return (float) $currencyToRate/$currencyFromRate;

@@ -10,9 +10,9 @@
  */
 
 namespace Sylius\Bundle\MoneyBundle\Controller;
+use Sylius\Bundle\MoneyBundle\ExchangeRate\Provider\ProviderException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class CurrencyController extends Controller
 {
@@ -25,20 +25,26 @@ class CurrencyController extends Controller
 
     /**
      * Update all exchange rates with Database Updater
-     * @param Request $request
+     * @param  Request                                            $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function updateAllRatesAction(Request $request)
     {
         $databaseUpdater = $this->container->get('sylius.exchange_rate.updater');
 
-        if ($databaseUpdater->updateAllRates()) {
-            $message = $this->get('translator')->trans('sylius.exchange_rate.update.success', array(), 'flashes');
-            $request->getSession()->getFlashBag()->add('success', $message);
-        } else {
-            $message = $this->get('translator')->trans('sylius.exchange_rate.update.error', array(), 'flashes');
+        try {
+            if ($databaseUpdater->updateAllRates()) {
+                $message = $this->get('translator')->trans('sylius.exchange_rate.update.success', array(), 'flashes');
+                $request->getSession()->getFlashBag()->add('success', $message);
+            } else {
+                $message = $this->get('translator')->trans('sylius.exchange_rate.update.error', array(), 'flashes');
+                $request->getSession()->getFlashBag()->add('error', $message);
+            }
+        } catch (ProviderException $exception) {
+            $message = $this->get('translator')->trans('sylius.exchange_rate.update.provider_exception', array(), 'flashes');
             $request->getSession()->getFlashBag()->add('error', $message);
         }
+
         return $this->redirect($this->get('router')->generate('sylius_backend_exchange_rate_index'));
     }
 }
