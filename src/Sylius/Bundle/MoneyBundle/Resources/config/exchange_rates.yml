@@ -1,0 +1,5 @@
+services:
+    sylius.exchange_rate.yahoo_provider: Yahoo Exchange Rates
+    sylius.exchange_rate.google_provider: Google Exchange Rates
+default_service:
+    sylius.exchange_rate.yahoo_provider

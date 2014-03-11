@@ -11,7 +11,6 @@
 
 namespace Sylius\Bundle\MoneyBundle\ExchangeRate\Provider;
 
-use Sylius\Bundle\MoneyBundle\ExchangeRate\ProviderInterface;
 use Guzzle\Http\ClientInterface;
 
 /**

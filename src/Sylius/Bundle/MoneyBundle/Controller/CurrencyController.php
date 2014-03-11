@@ -14,6 +14,7 @@ use Sylius\Bundle\MoneyBundle\ExchangeRate\Provider\ProviderException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
+
 class CurrencyController extends Controller
 {
     public function changeAction(Request $request, $currency)
@@ -46,5 +47,19 @@ class CurrencyController extends Controller
         }
 
         return $this->redirect($this->get('router')->generate('sylius_backend_exchange_rate_index'));
+    }
+
+    public function settingsAction(Request $request)
+    {
+
+
+        return $this->render($request->attributes->get('template', 'SyliusWebBundle:Backend/ExchangeRate:settings/settings.html.twig'), array(
+
+        ));
+    }
+
+    public function saveSettingsAction()
+    {
+
     }
 }

@@ -25,6 +25,10 @@
         <parameter key="sylius.currency_context.class">Sylius\Bundle\MoneyBundle\Context\CurrencyContext</parameter>
         <parameter key="sylius.currency_converter.class">Sylius\Bundle\MoneyBundle\Converter\CurrencyConverter</parameter>
         <parameter key="sylius.exchange_rate.provider_factory.class">Sylius\Bundle\MoneyBundle\ExchangeRate\Provider\ProviderFactory</parameter>
+        <parameter key="sylius.settings_schema.exchange_rates.class">Sylius\Bundle\MoneyBundle\Settings\ExchangeRateSettingsSchema</parameter>
+        <parameter key="sylius.exchange_rate.services.class">Sylius\Bundle\MoneyBundle\Model\ExchangeRateService</parameter>
+        <parameter key="sylius.form.type.exchange_service_choice.class">Sylius\Bundle\MoneyBundle\Form\Type\ExchangeServiceChoiceType</parameter>
+        <parameter key="sylius.exchange_rate.config.class">Sylius\Bundle\MoneyBundle\Model\ExchangeRateConfig</parameter>
     </parameters>
 
     <services>
@@ -94,6 +98,28 @@
                 <argument type="service" id="service_container" />
             </call>
         </service>
+
+        <service id="sylius.exchange_rate.services" class="%sylius.exchange_rate.services.class%">
+            <argument type="service" id="sylius.settings.manager" />
+            <argument type="service" id="sylius.exchange_rate.config" />
+        </service>
+        
+        <service id="sylius.exchange_rate.config" class="%sylius.exchange_rate.config.class%"/>
+
+        <service id="sylius.settings_schema.exchange_rates" class="%sylius.settings_schema.exchange_rates.class%">
+            <argument type="service" id="sylius.exchange_rate.config" />
+            <tag name="sylius.settings_schema" namespace="exchange_rates" />
+        </service>
+
+        <service id="sylius.form.type.exchange_service_choice" class="%sylius.form.type.exchange_service_choice.class%">
+            <argument type="service" id="sylius.exchange_rate.services" />
+            <tag name="form.type" alias="sylius_exchange_service_choice" />
+        </service>
+
+        <service id="sylius.exchange_rate.fetch_command" class="Sylius\Bundle\MoneyBundle\Command\FetchRatesCommand">
+            <tag name="console.command" />
+        </service>
+
 
     </services>
 
