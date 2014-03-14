@@ -14,7 +14,7 @@ namespace Sylius\Bundle\MoneyBundle\ExchangeRate\Provider;
 use Guzzle\Http\ClientInterface;
 
 /**
- * Class GoogleProvider
+ * Class YahooProvider
  *
  * Get the currency rates from the Google Service
  *

@@ -16,7 +16,13 @@ use Sylius\Bundle\SettingsBundle\Schema\SchemaInterface;
 use Sylius\Bundle\SettingsBundle\Schema\SettingsBuilderInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 
-
+/**
+ * Class ExchangeRateSettingsSchema
+ *
+ * Settings for Exchange rate active provider
+ *
+ * @author Ivan Djurdjevac <djurdjevac@gmail.com>
+ */
 class ExchangeRateSettingsSchema implements SchemaInterface
 {
 
@@ -39,7 +45,7 @@ class ExchangeRateSettingsSchema implements SchemaInterface
     {
         $builder
             ->setDefaults(array(
-                'exchange_service_name'            => 'Sylius - Modern ecommerce for Symfony2',
+                'exchange_service_name'            => $this->getDefaultExchangeServiceName(),
             ))
             ->setAllowedTypes(array(
                 'exchange_service_name'            => array('string')
@@ -57,5 +63,16 @@ class ExchangeRateSettingsSchema implements SchemaInterface
                 'label'       => 'sylius.exchange_rate.form.select_provider',
                 'choices' => $this->config->getExchangeServiceNames(),
             ));
+    }
+
+    /**
+     * Get default exchange service name
+     * @return string
+     */
+    private function getDefaultExchangeServiceName()
+    {
+        $config = $this->config->get();
+        return isset($config['default_service']) ? $config['default_service'] : '';
+
     }
 }

@@ -11,8 +11,8 @@
 
 namespace Sylius\Bundle\MoneyBundle\ExchangeRate\Provider;
 
-use Sylius\Bundle\MoneyBundle\ExchangeRate\ProviderInterface;
 use Guzzle\Http\ClientInterface;
+use Sylius\Bundle\MoneyBundle\ExchangeRate\Provider\Exception\CurrencyNotExistException;
 
 /**
  * Class EuropeanCentralBankProvider
@@ -48,7 +48,7 @@ class EuropeanCentralBankProvider implements ProviderInterface
      * Get rate from European Central Bank exchange rate service
      * @param  string            $currencyFrom
      * @param  string            $currencyTo
-     * @throws ProviderException
+     * @throws ProviderException | CurrencyNotExistException
      * @return float
      */
     public function getRate($currencyFrom, $currencyTo)
@@ -87,11 +87,11 @@ class EuropeanCentralBankProvider implements ProviderInterface
         }
 
         if (! isset($currencyFromRate) or $currencyFromRate == 0) {
-            throw new ProviderException('Invalid input currency code');
+            throw new CurrencyNotExistException($currencyTo);
         }
 
         if (! isset($currencyToRate) or $currencyToRate == 0) {
-            throw new ProviderException('Invalid output currency code');
+            throw new CurrencyNotExistException($currencyTo);
         }
 
         return (float) $currencyToRate/$currencyFromRate;

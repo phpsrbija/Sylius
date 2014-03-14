@@ -11,14 +11,16 @@
 
 namespace Sylius\Bundle\MoneyBundle\Command;
 
-use Sylius\Bundle\MoneyBundle\ExchangeRate\Provider\ProviderFactory;
+use Sylius\Bundle\MoneyBundle\ExchangeRate\Provider\Exception\CurrencyNotExistException;
+use Sylius\Bundle\MoneyBundle\ExchangeRate\Provider\ProviderException;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Sylius\Bundle\MoneyBundle\ExchangeRate\Updater\UpdaterInterface;
 
 /**
+ * Class FetchRatesCommand
+ *
  * Command to fetch exchange rates from external service
  *
  * @author Ivan Djurdjevac <djurdjevac@gmail.com>
@@ -76,7 +78,16 @@ class FetchRatesCommand extends ContainerAwareCommand
                 continue;
             }
 
-            $ratesUpdater->updateRate($currency);
+            try {
+                if (!$ratesUpdater->updateRate($exchangeRate->getCurrency()))
+                {
+                    $output->writeln(sprintf("<error>ERROR: Currency %s can't be updated.</error>", $exchangeRate->getCurrency()));
+                }
+            } catch (CurrencyNotExistException $e) {
+                $output->writeln(sprintf("<error>ERROR: %s</error>", $e->getMessage()));
+            } catch (ProviderException $e) {
+                $output->writeln(sprintf("<error>ERROR: %s</error>", $e->getMessage()));
+            }
 
             $output->writeln(sprintf("<info>%s</info> currency rate is now <question>%g</question>", $exchangeRate->getCurrency(), $exchangeRate->getRate()));
         }

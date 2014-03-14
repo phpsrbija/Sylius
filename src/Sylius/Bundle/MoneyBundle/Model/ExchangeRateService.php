@@ -1,7 +1,14 @@
 <?php namespace Sylius\Bundle\MoneyBundle\Model;
 
 
-
+/**
+ * Class ExchangeRateService
+ *
+ * Exchange Rate Service Model
+ * Services are stored into yml file and model get data from Config object
+ *
+ * @author Ivan Djurdjevac <djurdjevac@gmail.com>
+ */
 class ExchangeRateService
 {
 
@@ -30,7 +37,8 @@ class ExchangeRateService
     }
 
     /**
-     * Get selected Provider name
+     * Get Active Provider Key
+     * Key is container service key at the sam time
      */
     public function getActiveProviderKey()
     {

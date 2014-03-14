@@ -53,7 +53,9 @@ class GoogleProvider implements ProviderInterface
     public function getRate($currencyFrom, $currencyTo)
     {
         $fetchUrl = sprintf('%scurrency?from=%s&to=%s', $this->serviceUrl, $currencyFrom, $currencyTo);
-        if ($response = $this->httpClient->get($fetchUrl)->send() && $jsonResponse = $response->json()) {
+        $response = $this->httpClient->get($fetchUrl)->send();
+
+        if ($response && $jsonResponse = $response->json()) {
             return (float) $jsonResponse['rate'];
         }
 

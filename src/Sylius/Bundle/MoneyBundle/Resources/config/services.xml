@@ -29,6 +29,12 @@
         <parameter key="sylius.exchange_rate.services.class">Sylius\Bundle\MoneyBundle\Model\ExchangeRateService</parameter>
         <parameter key="sylius.form.type.exchange_service_choice.class">Sylius\Bundle\MoneyBundle\Form\Type\ExchangeServiceChoiceType</parameter>
         <parameter key="sylius.exchange_rate.config.class">Sylius\Bundle\MoneyBundle\Model\ExchangeRateConfig</parameter>
+
+        <parameter key="sylius.exchange_rate.updater.class">Sylius\Bundle\MoneyBundle\ExchangeRate\Updater\DatabaseUpdater</parameter>
+        <parameter key="sylius.exchange_rate.http_client.class">Guzzle\Http\Client</parameter>
+        <parameter key="sylius.exchange_rate.european_central_bank_provider.class">Sylius\Bundle\MoneyBundle\ExchangeRate\Provider\EuropeanCentralBankProvider</parameter>
+        <parameter key="sylius.exchange_rate.google_provider.class">Sylius\Bundle\MoneyBundle\ExchangeRate\Provider\GoogleProvider</parameter>
+        <parameter key="sylius.exchange_rate.yahoo_provider.class">Sylius\Bundle\MoneyBundle\ExchangeRate\Provider\YahooProvider</parameter>
     </parameters>
 
     <services>
@@ -80,10 +86,8 @@
             <argument type="service" id="sylius.exchange_rate.http_client" />
         </service>
 
-        <service id="sylius.exchange_rate.factory" class="%sylius.exchange_rate.factory.class%">
-            <call method="setContainer">
-                <argument type="service" id="service_container" />
-            </call>
+        <service id="sylius.exchange_rate.european_central_bank_provider" class="%sylius.exchange_rate.european_central_bank_provider.class%">
+            <argument type="service" id="sylius.exchange_rate.http_client" />
         </service>
 
         <service id="sylius.exchange_rate.provider_factory" class="%sylius.exchange_rate.provider_factory.class%">

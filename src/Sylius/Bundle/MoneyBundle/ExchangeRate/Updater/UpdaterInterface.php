@@ -11,6 +11,13 @@
 
 namespace Sylius\Bundle\MoneyBundle\ExchangeRate\Updater;
 
+/**
+ * Interface UpdaterInterface
+ *
+ * UpdaterInterface responsibility is to update exchange rate value
+ *
+ * @author Ivan Djurdjevac <djurdjevac@gmail.com>
+ */
 interface UpdaterInterface
 {
     /**

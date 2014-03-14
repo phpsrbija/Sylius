@@ -13,11 +13,21 @@ namespace Sylius\Bundle\MoneyBundle\ExchangeRate\Provider;
 
 use Symfony\Component\DependencyInjection\ContainerAware;
 
+/**
+ * Class ProviderFactory
+ *
+ * ProviderFactory responsibility is to create specific provider
+ *
+ * @author Ivan Djurdjevac <djurdjevac@gmail.com>
+ */
 class ProviderFactory extends ContainerAware
 {
 
     /**
-     * Create provider object
+     * Create Exchange Rate Provider which is currently active
+     * Currently active provider is saved in settings
+     *
+     * @return ProviderInterface
      */
     public function createProvider()
     {
