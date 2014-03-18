@@ -24,19 +24,22 @@ class GoogleProvider implements ProviderInterface
 {
     /**
      * Http Client object
+     *
      * @var \Guzzle\Http\Client
      */
     private $httpClient;
 
     /**
      * Service exchange rate url
+     *
      * @var string
      */
     private $serviceUrl = 'http://rate-exchange.appspot.com/';
 
     /**
      * Google provider construct
-     * @param $httpClient
+     *
+     * @param ClientInterface $httpClient
      */
     public function __construct(ClientInterface $httpClient)
     {
@@ -45,17 +48,26 @@ class GoogleProvider implements ProviderInterface
 
     /**
      * Get rate from Google exchange rate service
+     *
      * @param  string            $currencyFrom
      * @param  string            $currencyTo
+     *
      * @throws ProviderException
+     *
      * @return float
      */
     public function getRate($currencyFrom, $currencyTo)
     {
         $fetchUrl = sprintf('%scurrency?from=%s&to=%s', $this->serviceUrl, $currencyFrom, $currencyTo);
-        $response = $this->httpClient->get($fetchUrl)->send();
 
-        if ($response && $jsonResponse = $response->json()) {
+        try {
+            $response = $this->httpClient->get($fetchUrl)->send();
+        } catch (RequestException $e) {
+            throw new ProviderException($e->getMessage());
+        }
+
+        if ($response && $jsonResponse = $response->json() &&
+            isset($jsonResponse['rate']) && $jsonResponse['rate'] != 0) {
             return (float) $jsonResponse['rate'];
         }
 

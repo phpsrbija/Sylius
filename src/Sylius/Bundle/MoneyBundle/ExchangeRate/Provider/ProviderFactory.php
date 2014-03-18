@@ -32,6 +32,7 @@ class ProviderFactory extends ContainerAware
     public function createProvider()
     {
         $providerKeyName = $this->container->get('sylius.exchange_rate.services')->getActiveProviderKey();
+
         return $this->container->get($providerKeyName);
     }
 }

@@ -12,6 +12,7 @@
 namespace Sylius\Bundle\MoneyBundle\ExchangeRate\Provider;
 
 use Guzzle\Http\ClientInterface;
+use Guzzle\Http\Exception\RequestException;
 use Sylius\Bundle\MoneyBundle\ExchangeRate\Provider\Exception\CurrencyNotExistException;
 
 /**
@@ -25,19 +26,29 @@ class EuropeanCentralBankProvider implements ProviderInterface
 {
     /**
      * Http Client object
+     *
      * @var \Guzzle\Http\Client
      */
     private $httpClient;
 
     /**
      * Service exchange rate url
+     *
      * @var string
      */
     private $serviceUrl = 'http://www.ecb.europa.eu/';
 
     /**
+     * Service base currency
+     *
+     * @var string
+     */
+    private $baseCurrency = 'EUR';
+
+    /**
      * European Central Bank provider construct
-     * @param $httpClient
+     *
+     * @param ClientInterface $httpClient
      */
     public function __construct(ClientInterface $httpClient)
     {
@@ -46,9 +57,11 @@ class EuropeanCentralBankProvider implements ProviderInterface
 
     /**
      * Get rate from European Central Bank exchange rate service
+     *
      * @param  string            $currencyFrom
      * @param  string            $currencyTo
      * @throws ProviderException | CurrencyNotExistException
+     *
      * @return float
      */
     public function getRate($currencyFrom, $currencyTo)
@@ -57,7 +70,7 @@ class EuropeanCentralBankProvider implements ProviderInterface
 
         try {
             $response = $this->httpClient->get($fetchUrl)->send();
-        } catch (ClientErrorResponseException $e) {
+        } catch (RequestException $e) {
             throw new ProviderException($e->getMessage());
         }
 
@@ -67,10 +80,15 @@ class EuropeanCentralBankProvider implements ProviderInterface
             throw new ProviderException('Invalid XML file');
         }
 
-        $currencyFrom == 'EUR' and $currencyFromRate = 1;
-        $currencyTo == 'EUR' and $currencyToRate = 1;
+        $currencyFrom == $this->baseCurrency && $currencyFromRate = (float) 1;
+        $currencyTo == $this->baseCurrency && $currencyToRate = (float) 1;
 
         foreach ($xmlResponse->Cube->Cube->Cube as $node) {
+            if (! isset($node['currency']) || ! isset($node['rate']))
+            {
+                continue;
+            }
+
             $currency = (string) $node['currency'];
 
             if ($currencyFrom == $currency) {
@@ -81,16 +99,16 @@ class EuropeanCentralBankProvider implements ProviderInterface
                 $currencyToRate = (float) $node['rate'];
             }
 
-            if (isset($currencyFromRate) and isset($currencyToRate)) {
+            if (isset($currencyFromRate) && isset($currencyToRate)) {
                 break;
             }
         }
 
-        if (! isset($currencyFromRate) or $currencyFromRate == 0) {
+        if (! isset($currencyFromRate) || ! is_float($currencyFromRate) || $currencyFromRate == 0) {
             throw new CurrencyNotExistException($currencyTo);
         }
 
-        if (! isset($currencyToRate) or $currencyToRate == 0) {
+        if (! isset($currencyToRate) || ! is_float($currencyToRate) || $currencyToRate == 0) {
             throw new CurrencyNotExistException($currencyTo);
         }
 

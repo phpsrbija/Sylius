@@ -14,7 +14,7 @@ namespace Sylius\Bundle\MoneyBundle\ExchangeRate\Provider;
 /**
  * Interface ProviderInterface
  *
- * Exchange Rate Providers who implement ProviderInterface are responsible to get accurate exchange rate.
+ * Exchange Rate Providers which implements ProviderInterface are responsible to get accurate exchange rate.
  *
  * @author Ivan Djurdjevac <djurdjevac@gmail.com>
  */
@@ -25,6 +25,7 @@ interface ProviderInterface
      *
      * @param  string $currencyFrom
      * @param  string $currencyTo
+     *
      * @return float
      */
     public function getRate($currencyFrom, $currencyTo);
