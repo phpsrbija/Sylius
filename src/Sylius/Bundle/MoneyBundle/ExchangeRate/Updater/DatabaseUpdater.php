@@ -14,11 +14,13 @@ namespace Sylius\Bundle\MoneyBundle\ExchangeRate\Updater;
 use Sylius\Bundle\MoneyBundle\ExchangeRate\Provider\ProviderFactory;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Sylius\Bundle\MoneyBundle\Model\ExchangeRateInterface;
+use Sylius\Bundle\MoneyBundle\ExchangeRate\Provider\ProviderException;
 
 /**
- * Class GoogleProvider
+ * Class DatabaseUpdater
  *
- * Get the currency rates from the Google Service
+ * Updates exchange rates using external exchange rate providers
  *
  * @author Ivan Đurđevac <djurdjevac@gmail.com>
  */
@@ -26,23 +28,25 @@ class DatabaseUpdater implements UpdaterInterface, ContainerAwareInterface
 {
     /**
      * Container
+     *
      * @var ContainerInterface
      */
     protected $container;
 
     /**
+     * @var \Sylius\Bundle\MoneyBundle\ExchangeRate\Provider\ProviderInterface
+     */
+    private $exchangeRateProvider;
+
+    /**
      * Set Container
+     *
      * @param ContainerInterface $container
      */
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
     }
-
-    /**
-     * @var ProviderInterface
-     */
-    private $exchangeRateProvider;
 
     /**
      * Create Updater with provider
@@ -54,7 +58,9 @@ class DatabaseUpdater implements UpdaterInterface, ContainerAwareInterface
 
     /**
      * Update rate in database for currency
+     *
      * @param  string $currency
+     *
      * @return bool
      */
     public function updateRate($currency)
@@ -64,20 +70,16 @@ class DatabaseUpdater implements UpdaterInterface, ContainerAwareInterface
             ->getRepository('Sylius\Bundle\MoneyBundle\Model\ExchangeRate')
             ->findOneBy(array('currency' => $currency));
 
-        if (!$exchangeRate) {
-            return false;
-        }
-
-        $currencyRate = $this->exchangeRateProvider->getRate($this->getBaseCurrency(), $exchangeRate->getCurrency());
-        $exchangeRate->setRate($currencyRate);
+        $result = $this->fetchRate($exchangeRate);
 
         $doctrine->getManager()->flush();
 
-        return true;
+        return $result;
     }
 
     /**
      * Update All rates
+     *
      * @return bool
      */
     public function updateAllRates()
@@ -87,23 +89,40 @@ class DatabaseUpdater implements UpdaterInterface, ContainerAwareInterface
             ->getRepository('Sylius\Bundle\MoneyBundle\Model\ExchangeRate')
             ->findAll();
 
-        $baseCurrency = $this->getBaseCurrency();
-
         foreach ($exchangeRates as $exchangeRate) {
-            if ($baseCurrency == $exchangeRate->getCurrency()) {
-                continue;
-            }
-
-            $currencyRate = $this->exchangeRateProvider->getRate($baseCurrency, $exchangeRate->getCurrency());
-            $exchangeRate->setRate($currencyRate);
+            $this->fetchRate($exchangeRate);
         }
+
         $doctrine->getManager()->flush();
 
         return true;
     }
 
     /**
-     * Bet base currency
+     * Fetch rate from external services
+     *
+     * @param ExchangeRateInterface $exchangeRate
+     *
+     * @return bool
+     */
+    private function fetchRate(ExchangeRateInterface $exchangeRate)
+    {
+        $baseCurrency = $this->getBaseCurrency();
+
+        if ($baseCurrency == $exchangeRate->getCurrency()
+        ) {
+            return false;
+        }
+
+        $currencyRate = $this->exchangeRateProvider->getRate($baseCurrency, $exchangeRate->getCurrency());
+        $exchangeRate->setRate($currencyRate);
+
+        return true;
+    }
+
+    /**
+     * Get base currency
+     *
      * @return string
      */
     private function getBaseCurrency()
