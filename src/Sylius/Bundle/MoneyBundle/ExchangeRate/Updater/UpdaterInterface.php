@@ -22,13 +22,16 @@ interface UpdaterInterface
 {
     /**
      * Update currency rate
+     *
      * @param  string $currency
+     *
      * @return bool
      */
     public function updateRate($currency);
 
     /**
      * Update all currencies in system
+     *
      * @return bool
      */
     public function updateAllRates();
