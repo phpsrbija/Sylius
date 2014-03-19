@@ -15,7 +15,6 @@ use Sylius\Bundle\MoneyBundle\ExchangeRate\Provider\ProviderFactory;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Sylius\Bundle\MoneyBundle\Model\ExchangeRateInterface;
-use Sylius\Bundle\MoneyBundle\ExchangeRate\Provider\ProviderException;
 
 /**
  * Class DatabaseUpdater
@@ -59,7 +58,7 @@ class DatabaseUpdater implements UpdaterInterface, ContainerAwareInterface
     /**
      * Update rate in database for currency
      *
-     * @param  string $currency
+     * @param string $currency
      *
      * @return bool
      */

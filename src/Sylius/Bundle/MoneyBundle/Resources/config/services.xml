@@ -35,6 +35,7 @@
         <parameter key="sylius.exchange_rate.european_central_bank_provider.class">Sylius\Bundle\MoneyBundle\ExchangeRate\Provider\EuropeanCentralBankProvider</parameter>
         <parameter key="sylius.exchange_rate.google_provider.class">Sylius\Bundle\MoneyBundle\ExchangeRate\Provider\GoogleProvider</parameter>
         <parameter key="sylius.exchange_rate.yahoo_provider.class">Sylius\Bundle\MoneyBundle\ExchangeRate\Provider\YahooProvider</parameter>
+        <parameter key="sylius.exchange_rate.yaml_parser.class">Symfony\Component\Yaml\Parser</parameter>
     </parameters>
 
     <services>
@@ -108,7 +109,10 @@
             <argument type="service" id="sylius.exchange_rate.config" />
         </service>
         
-        <service id="sylius.exchange_rate.config" class="%sylius.exchange_rate.config.class%"/>
+        <service id="sylius.exchange_rate.yaml_parser" class="%sylius.exchange_rate.yaml_parser.class%"/>
+        <service id="sylius.exchange_rate.config" class="%sylius.exchange_rate.config.class%">
+            <argument type="service" id="sylius.exchange_rate.yaml_parser" />
+        </service>
 
         <service id="sylius.settings_schema.exchange_rates" class="%sylius.settings_schema.exchange_rates.class%">
             <argument type="service" id="sylius.exchange_rate.config" />

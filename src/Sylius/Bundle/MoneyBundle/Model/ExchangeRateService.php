@@ -1,5 +1,5 @@
 <?php namespace Sylius\Bundle\MoneyBundle\Model;
-
+use Sylius\Bundle\SettingsBundle\Manager\SettingsManagerInterface;
 
 /**
  * Class ExchangeRateService
@@ -24,13 +24,11 @@ class ExchangeRateService
      */
     protected $config;
 
-
-
     /**
      * @param $settingsManager
      * @param $config
      */
-    function __construct($settingsManager, ExchangeRateConfig $config)
+    public function __construct(SettingsManagerInterface $settingsManager, ExchangeRateConfig $config)
     {
         $this->settingsManager = $settingsManager;
         $this->config = $config;
@@ -45,6 +43,7 @@ class ExchangeRateService
         $providerName  = $this->settingsManager->loadSettings('exchange_rates')->get('exchange_service_name');
         if (!$providerName) {
             $config = $this->config->get();
+
             return $config['default_service'];
         }
 

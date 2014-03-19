@@ -84,8 +84,7 @@ class EuropeanCentralBankProvider implements ProviderInterface
         $currencyTo == $this->baseCurrency && $currencyToRate = (float) 1;
 
         foreach ($xmlResponse->Cube->Cube->Cube as $node) {
-            if (! isset($node['currency']) || ! isset($node['rate']))
-            {
+            if (! isset($node['currency']) || ! isset($node['rate'])) {
                 continue;
             }
 

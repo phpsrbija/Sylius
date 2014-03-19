@@ -49,8 +49,8 @@ class GoogleProvider implements ProviderInterface
     /**
      * Get rate from Google exchange rate service
      *
-     * @param  string            $currencyFrom
-     * @param  string            $currencyTo
+     * @param string $currencyFrom
+     * @param string $currencyTo
      *
      * @throws ProviderException
      *
@@ -66,7 +66,7 @@ class GoogleProvider implements ProviderInterface
             throw new ProviderException($e->getMessage());
         }
 
-        if ($response && $jsonResponse = $response->json() &&
+        if ($response && ($jsonResponse = $response->json()) &&
             isset($jsonResponse['rate']) && $jsonResponse['rate'] != 0) {
             return (float) $jsonResponse['rate'];
         }

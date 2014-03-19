@@ -23,7 +23,7 @@ interface UpdaterInterface
     /**
      * Update currency rate
      *
-     * @param  string $currency
+     * @param string $currency
      *
      * @return bool
      */

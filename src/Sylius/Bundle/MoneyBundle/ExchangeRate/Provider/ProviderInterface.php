@@ -23,8 +23,8 @@ interface ProviderInterface
     /**
      * Get exchange rate value, usually from external service
      *
-     * @param  string $currencyFrom
-     * @param  string $currencyTo
+     * @param string $currencyFrom
+     * @param string $currencyTo
      *
      * @return float
      */

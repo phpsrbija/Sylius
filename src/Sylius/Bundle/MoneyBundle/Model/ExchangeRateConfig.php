@@ -28,6 +28,16 @@ class ExchangeRateConfig
      */
     protected $configArray;
 
+    /**
+     * Yaml Parser
+     * @var Parser
+     */
+    protected $parser;
+
+    public function __construct(Parser $parser)
+    {
+        $this->parser = $parser;
+    }
 
     /**
      * Get Config Array
@@ -36,9 +46,9 @@ class ExchangeRateConfig
     public function get()
     {
         if (!$this->configArray) {
-            $parser = new Parser();
-            $this->configArray = $parser->parse(file_get_contents(__DIR__ . '/../Resources/config/exchange_rates.yml'));
+            $this->configArray = $this->parser->parse(file_get_contents(__DIR__ . '/../Resources/config/exchange_rates.yml'));
         }
+
         return $this->configArray;
     }
 
@@ -49,6 +59,7 @@ class ExchangeRateConfig
     public function getExchangeServiceNames()
     {
         $config = $this->get();
+
         return $config['services'];
     }
 }

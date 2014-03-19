@@ -35,14 +35,12 @@ class ExchangeServiceChoiceType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-
         $resolver
             ->setDefaults(array(
                 'class' => $this->className
             ))
         ;
     }
-
 
     public function getParent()
     {

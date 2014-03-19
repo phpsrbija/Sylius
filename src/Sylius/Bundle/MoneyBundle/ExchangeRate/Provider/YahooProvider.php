@@ -12,7 +12,6 @@
 namespace Sylius\Bundle\MoneyBundle\ExchangeRate\Provider;
 
 use Guzzle\Http\ClientInterface;
-use Guzzle\Http\Exception\CurlException;
 use Guzzle\Http\Exception\RequestException;
 
 /**
@@ -56,8 +55,8 @@ class YahooProvider implements ProviderInterface
     /**
      * Get rate from Google exchange rate service
      *
-     * @param  string            $currencyFrom
-     * @param  string            $currencyTo
+     * @param string $currencyFrom
+     * @param string $currencyTo
      *
      * @throws ProviderException
      *
