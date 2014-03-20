@@ -44,7 +44,7 @@ class CurrencyConverter implements CurrencyConverterInterface
     }
 
     /**
-     * Get currency with rate 1.000
+     * Get base rate currency
      * This currency can be used for conversion to other currencies
      *
      * @return mixed
@@ -52,7 +52,7 @@ class CurrencyConverter implements CurrencyConverterInterface
      */
     public function getBaseCurrency()
     {
-        if (!$baseExchangeRate = $this->exchangeRateRepository->findOneBy(array('rate' => 1))) {
+        if (!$baseExchangeRate = $this->exchangeRateRepository->findOneBy(array('baseRate' => 1))) {
             throw new BaseCurrencyNotSetException;
         }
 
