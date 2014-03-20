@@ -12,11 +12,19 @@
 namespace Sylius\Bundle\MoneyBundle\ExchangeRate\Provider\Exception;
 use Exception;
 
+/**
+ * Class CurrencyNotExistException
+ *
+ * Exception is raised when currency is not available in selected external service
+ *
+ * @package Sylius\Bundle\MoneyBundle\ExchangeRate\Provider\Exception
+ */
 class CurrencyNotExistException extends Exception
 {
 
     /**
      * Create CurrencyNotExistException
+     *
      * @param string    $currency
      * @param int       $code
      * @param Exception $previous
@@ -27,3 +35,4 @@ class CurrencyNotExistException extends Exception
         parent::__construct($message, $code, $previous);
     }
 }
+
