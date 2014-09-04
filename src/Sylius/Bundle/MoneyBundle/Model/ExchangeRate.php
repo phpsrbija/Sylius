@@ -44,7 +44,7 @@ class ExchangeRate implements ExchangeRateInterface
      * @var \DateTime
      */
     protected $updatedAt;
-    
+
     /**
      * Constructor
      */

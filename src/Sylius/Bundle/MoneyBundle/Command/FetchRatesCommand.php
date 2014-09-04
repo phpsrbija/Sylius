@@ -39,8 +39,8 @@ class FetchRatesCommand extends ContainerAwareCommand
 
     /**
      * Update exchange rates
-     * @param InputInterface $input
-     * @param OutputInterface $output
+     * @param  InputInterface  $input
+     * @param  OutputInterface $output
      * @return int|null|void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -63,11 +63,11 @@ class FetchRatesCommand extends ContainerAwareCommand
 
         if ($currency && $currency == $baseCurrency) {
             $output->writeln('Base currency can\'t be updated.');
+
             return;
         }
 
-        if ($currency)
-        {
+        if ($currency) {
             $exchangeRates = $exchangeRepository->findBy(array('currency' => $currency));
         } else {
             $exchangeRates = $exchangeRepository->findAll();
@@ -79,8 +79,7 @@ class FetchRatesCommand extends ContainerAwareCommand
             }
 
             try {
-                if (!$ratesUpdater->updateRate($exchangeRate->getCurrency()))
-                {
+                if (!$ratesUpdater->updateRate($exchangeRate->getCurrency())) {
                     $output->writeln(sprintf("<error>ERROR: Currency %s can't be updated.</error>", $exchangeRate->getCurrency()));
                 }
             } catch (CurrencyNotExistException $e) {

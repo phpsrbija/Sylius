@@ -11,6 +11,7 @@
 
 namespace Sylius\Bundle\MoneyBundle\Converter;
 
+use Sylius\Bundle\MoneyBundle\Converter\Exception\BaseCurrencyNotSetException;
 use Sylius\Bundle\ResourceBundle\Model\RepositoryInterface;
 
 class CurrencyConverter implements CurrencyConverterInterface

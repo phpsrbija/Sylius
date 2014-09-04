@@ -74,6 +74,10 @@ class EuropeanCentralBankProvider implements ProviderInterface
             throw new ProviderException($e->getMessage());
         }
 
+        if (!$response) {
+            throw new ProviderException('Response from ECB is empty');
+        }
+
         $xmlResponse = $response->xml();
 
         if (! isset($xmlResponse->Cube->Cube->Cube)) {
